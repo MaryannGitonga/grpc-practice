@@ -1,0 +1,34 @@
+// todo.proto: A schema that will be used as communication package between the client and the server
+
+syntax = "proto3"; 
+
+package todoPackage; // package holds the services
+
+// One service: the todo service which will house the methods to be used
+service Todo {
+    rpc createTodo (Request) returns (TodoItem);
+
+    rpc readTodos (noparams) returns (TodoItems);
+
+    rpc readTodosStream(noparams) returns (stream TodoItem);
+
+}
+
+// rpc methods don't support void by default; create a void message
+message noparams {}
+
+// Request message: Request(text)
+message Request {
+    string text = 1;
+}
+
+// TodoItem message: TodoItem(id, text)
+message TodoItem {
+    int32 id = 1;
+    string text = 2;
+}
+
+// TodoItems message: TodoItems(array: items)
+message TodoItems {
+    repeated TodoItem items = 1; // since this is an array, it will have the type repeated
+}
