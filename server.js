@@ -1,4 +1,4 @@
-const grpc = require("grpc");
+const grpc = require("@grpc/grpc-js");
 const protoLoader = require("@grpc/proto-loader")
 const packageDef = protoLoader.loadSync("todo.proto", {});
 
@@ -13,7 +13,14 @@ const server = new grpc.Server();
 
 // bind the server to address 0.0.0.0:40000
 // gRPC allows bypassing of credentials through grpc.ServerCredentials.createInsecure
-server.bind("0.0.0.0:40000", grpc.ServerCredentials.createInsecure());
+server.bind("0.0.0.0:40000", grpc.ServerCredentials.createInsecure(), (err, port) => {
+    if (err != null) {
+      console.error(err);
+      return;
+    }
+    server.start();
+    console.log(`gRPC server started on port ${port}`);
+  });
 
 // Add service to server
 // The methods have to be mapped to the server (methods existing on this file)
