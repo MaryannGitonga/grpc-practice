@@ -13,7 +13,7 @@ const server = new grpc.Server();
 
 // bind the server to address 0.0.0.0:40000
 // gRPC allows bypassing of credentials through grpc.ServerCredentials.createInsecure
-server.bind("0.0.0.0:40000", grpc.ServerCredentials.createInsecure(), (err, port) => {
+server.bindAsync("0.0.0.0:40000", grpc.ServerCredentials.createInsecure(), (err, port) => {
     if (err != null) {
       console.error(err);
       return;
@@ -52,5 +52,3 @@ function readTodosStream(call, callback){
     todos.forEach(todo => call.write(todo));
     call.end(); //end communication between the client and the server
 } 
-
-server.start();
